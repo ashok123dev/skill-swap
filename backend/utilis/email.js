@@ -1,0 +1,21 @@
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+const sendOtpEmail = async (email, otp) => {
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Your Skill Swap verification code",
+        text: `Your Skill Swap verification code is ${otp}`
+    });
+};
+
+module.exports = { sendOtpEmail };
