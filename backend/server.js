@@ -2,26 +2,36 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const authRoutes = require("./routes/authRoutes");
+const connectionRoutes = require("./routes/ConnectionRoutes");
+
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection
-mongoose
-    .connect("mongodb://127.0.0.1:27017/skills")
-    .then(() => console.log("mongodb connected"))
-    .catch((err) => console.log("error occurred:", err));
-
 // Routes
-const authRoutes = require("./routes/authRoutes");
 app.use("/auth", authRoutes);
+app.use("/connections", connectionRoutes);
 
 // Test route
 app.get("/", (req, res) => {
-    res.send("Backend Running");
+    res.send("Skill Swap Backend Running");
 });
 
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
-});
+// MongoDB connection
+const MONGO_URI = "mongodb://127.0.0.1:27017/skillswap";
+
+mongoose
+    .connect(MONGO_URI)
+    .then(() => {
+        console.log("MongoDB connected successfully");
+
+        app.listen(5000, () => {
+            console.log("Server running on port 5000");
+        });
+    })
+    .catch((error) => {
+        console.log("MongoDB connection failed:", error);
+    });
