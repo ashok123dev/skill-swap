@@ -1,123 +1,84 @@
-# 🔁 Skill Swap
+# Skill Swap
 
-**Teach what you know. Learn what you want.**
+Skill Swap is a web app where students can swap skills with each other. You enter the skill you can teach and the skill you want to learn, and the app shows you students who match.
 
-Skill Swap is a full-stack MERN web application that connects students who want to exchange skills. Tell the app what you can teach and what you want to learn, and it finds and ranks the best partners for you using a match-score algorithm.
+I built this with the MERN stack to practice full stack development.
 
-> 🌐 **Live demo:** [add your deployed link here]
+## What it can do
 
----
+- Register with OTP verification (the OTP is sent by email), and log in
+- Search students by skill
+- Show matching students with a match score
+- Send a connection request to a student
+- The other student gets a WhatsApp message about the request (WhatsApp Cloud API)
+- See your requests as pending, accepted or rejected
+- A dashboard with a summary of your requests
 
-## ✨ Features
+## How matching works
 
-- **Register with OTP verification** – sign up and verify your email with a one-time password
-- **Login** – secure sign-in for registered students
-- **Find Skills** – search and browse students by the skills they teach
-- **Smart Matching** – every student is ranked by a match score (see below)
-- **Connection Requests** – send requests and track them as *Pending / Accepted / Rejected*
-- **Dashboard** – overview of your requests and activity
-- **Find Projects** and **Resume** pages – discover project partners and build your profile
+Every student has two things: the skill they teach and the skill they want to learn. When I compare myself with another student, I give points like this:
 
-## 🧠 How the match score works
+- They teach what I want to learn: 60 points
+- I teach what they want to learn: 40 points
+- We both teach the same skill: 10 points
 
-Each student has two fields: the skill they **teach** and the skill they want to **learn**. Two students are compared like this:
+The maximum score is 100. Students with 0 points are not shown, and the rest are sorted from highest to lowest score. The code is in `my-app/src/Matchscore.js`.
 
-| Condition | Points |
-|---|---|
-| They teach what I want to learn | **+60** |
-| I teach what they want to learn | **+40** |
-| We both teach the same core skill | **+10** |
+## Built with
 
-The score is capped at 100. Students with a score above 0 are shown in descending order, so the best partner appears first.
+- React and Axios (frontend)
+- Node.js and Express (backend)
+- MongoDB and Mongoose (database)
+- Nodemailer (OTP emails)
+- WhatsApp Cloud API by Meta (for the connection request message)
 
-The logic lives in [`my-app/src/Matchscore.js`](my-app/src/Matchscore.js).
+## Run it on your computer
 
-## 🛠 Tech Stack
+You need Node.js and MongoDB installed.
 
-| Layer | Technologies |
-|---|---|
-| Frontend | React, Axios, CSS |
-| Backend | Node.js, Express.js |
-| Database | MongoDB with Mongoose |
-| Tools | Git, GitHub, VS Code, Postman |
-
-## 📁 Project Structure
+First, the backend. Create a file `backend/.env` with your Gmail details (for the OTP email) and your WhatsApp Cloud API details (from the Meta for Developers dashboard):
 
 ```
-skill-swap/
-├── backend/
-│   ├── controllers/     # Request handling logic (auth, etc.)
-│   ├── models/          # Mongoose schemas (User)
-│   ├── routes/          # API routes
-│   └── server.js        # Express app entry point
-└── my-app/              # React frontend
-    ├── public/
-    └── src/             # Pages and components
+EMAIL_USER=your_gmail_address
+EMAIL_PASS=your_gmail_app_password
+WHATSAPP_API_VERSION=v21.0
+WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
+WHATSAPP_TOKEN=your_access_token
 ```
 
-## 🚀 Getting Started
+Then run:
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18 or later)
-- [MongoDB](https://www.mongodb.com/) running locally, or a MongoDB Atlas connection string
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/ashok123dev/skill-swap.git
-cd skill-swap
 ```
-
-### 2. Start the backend
-```bash
 cd backend
 npm install
 npm start
 ```
-The API runs on **http://localhost:5000**.
 
-### 3. Start the frontend
-Open a second terminal:
-```bash
+It runs on http://localhost:5000.
+
+Then open a new terminal for the frontend:
+
+```
 cd my-app
 npm install
 npm start
 ```
-The app opens at **http://localhost:3000**.
 
-## 🔌 API Endpoints
+It opens on http://localhost:3000.
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/auth/register` | Create a new account |
-| POST | `/auth/verify-otp` | Verify email with OTP |
-| POST | `/auth/resend-otp` | Send a new OTP |
-| POST | `/auth/login` | Log in |
-| POST | `/connections` | Send a connection request |
+## Folders
 
-## 📸 Screenshots
+- `backend` - Express server, routes, controllers and the User model
+- `my-app` - React frontend
 
-| Home | Find Skills |
-|---|---|
-| ![Home](docs/screenshots/home.png) | ![Find Skills](docs/screenshots/find.png) |
+## Things I know are not perfect yet
 
-| Matches | Dashboard |
-|---|---|
-| ![Matches](docs/screenshots/matches.png) | ![Dashboard](docs/screenshots/dashboard.png) |
+- Passwords are not hashed yet. I want to add bcrypt and JWT login.
+- Connection requests and the dashboard data are saved in the browser (localStorage), not in the database.
+- Pages change with React state, so the URL does not change. I plan to move to React Router.
 
-## 🔮 Future Improvements
+## About me
 
-- Password hashing with bcrypt and JWT-based authentication
-- Real-time chat between matched students
-- Move requests and dashboard data from localStorage to the database
-- React Router for proper page URLs
-- Session scheduling and ratings after a swap
+I am Ashok Poola, a 3rd year B.Tech ECE student at NRI Institute of Technology. I am learning the MERN stack and looking for an internship as a web developer.
 
-## 👨‍💻 Author
-
-**Ashok Poola**
-B.Tech ECE (3rd year), NRI Institute of Technology
-Aspiring MERN Stack Developer
-
-- GitHub: [@ashok123dev](https://github.com/ashok123dev)
-- LinkedIn: [add your LinkedIn link]
-- Email: [add your email]
+GitHub: https://github.com/ashok123dev
